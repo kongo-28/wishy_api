@@ -1,6 +1,6 @@
 class WishesController < ApplicationController
   before_action :set_wish, only: %i[ show update destroy ]
-  before_action :authenticate_user! 
+  before_action :authenticate_user!, only: %i[ updata destoroy]
 
   # GET /wishes
   def index
