@@ -1,11 +1,13 @@
 class WishesController < ApplicationController
   before_action :set_wish, only: %i[ show update destroy ]
+  before_action :authenticate_user! 
 
   # GET /wishes
   def index
     @wishes = Wish.all
+    @user = current_user
 
-    render json: @wishes
+    render json: {wishes:@wishes, user:@user}
   end
 
   # GET /wishes/1
