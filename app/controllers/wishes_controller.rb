@@ -4,7 +4,7 @@ class WishesController < ApplicationController
 
   # GET /wishes
   def index
-    @wishes = Wish.all
+    @wishes = Wish.all.order("updated_at DESC")
     @user = current_user
 
     render json: {wishes:@wishes, user:@user}
@@ -48,6 +48,6 @@ class WishesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def wish_params
-      params.require(:wish).permit(:name, :content)
+      params.require(:wish).permit(:title, :content)
     end
 end
