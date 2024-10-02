@@ -1,32 +1,43 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[ index ]
+  before_action :authenticate_user!, only: %i[ index action]
+  before_action :set_wishes, only: %i[ index action ]
 
   # GET /users/:id
   def index
     @user = current_user
+    render json: {user: @user,wishes: @wishes}
+  end
+
+  # GET /users/action
+  def action
+    @user = current_user
+    wish_descriptions = @wishes.map { 
+      |wish| "Wish: #{wish["title"]}, likes: #{wish[:likes][0].count}" 
+    }.join("\n")
+
+    chat_gpt_service = ChatGptService.new
+    prompt= "wishは今後やってみたいことです。likesはやりたい気持ちを表していて、大きな数字ほどより強い気持ちです。これを参考にして次の日曜日のアクションプランを考えてください。"
+    full_prompt = "#{prompt}\n\nWishリスト:\n#{wish_descriptions}"
+    @action_plan = chat_gpt_service.chat(full_prompt)
+
+    render json: full_prompt
+  end
+
+  private
+
+  # ログインしているユーザーが1以上いいねしたwishとそれにひもづくlikeの情報のリスト
+  def set_wishes
     @wishes = Wish.joins(:likes)
     .where(likes: { user_id: @user.id })
     .where('likes.count >= ?', 1)
     .order("updated_at DESC")
-      wishes_with_user_likes = @wishes.map do |wish|
-        wish.as_json.merge(
-        likes: wish.likes.select { |like| like.user_id == @user.id }
-        )
-      end
+    wishes_with_user_likes = @wishes.map do |wish|
+      wish.as_json.merge(
+      likes: wish.likes.select { |like| like.user_id == @user.id }
+      )
+    end
     @wishes = wishes_with_user_likes
-
-    render json: {user: @user,wishes: @wishes}
   end
 
-
-  def action
-    chat_gpt_service = ChatGptService.new
-    # @chat_gpt = chat_gpt_service.chat("output 1 knowledge. about 50words")
-    @action_plan = [title: "アクションプラン",
-                  content: chat_gpt_service.chat("create schedule on next Sunday with my family in the morning")]
-
-      render json: @action_plan
-
-  end
 
 end
