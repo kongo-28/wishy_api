@@ -18,4 +18,15 @@ class UsersController < ApplicationController
     render json: {user: @user,wishes: @wishes}
   end
 
+
+  def action
+    chat_gpt_service = ChatGptService.new
+    # @chat_gpt = chat_gpt_service.chat("output 1 knowledge. about 50words")
+    @action_plan = [title: "アクションプラン",
+                  content: chat_gpt_service.chat("create schedule on next Sunday with my family in the morning")]
+
+      render json: @action_plan
+
+  end
+
 end

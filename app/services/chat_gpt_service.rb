@@ -9,7 +9,9 @@ class ChatGptService
     response = @openai.chat(
       parameters: {
         model: "gpt-4o-mini", # Required. # 使用するgpt-4o-miniのエンジンを指定
-        messages: [{ role: "system", content: "You are a personal secretary." }, { role: "user", content: prompt }],
+        messages: [{ role: "system", 
+        content: "You are a personal secretary." }, 
+        { role: "user", content: prompt }],
         temperature: 0.7, # 応答のランダム性を指定
         max_tokens: 200,  # 応答の長さを指定
       },
