@@ -59,7 +59,7 @@ class UsersController < ApplicationController
 
   def generate_candidate
     chat_gpt_service = ChatGptService.new
-    prompt = "500字以内で返して。話し言葉で返してください。以下のリストを参考にして私の好みを推測してください。その後、リストにあるもの以外で新たなwishを3つ提案してください。新たな提案は、【】で囲ってください。wishは今後やってみたいことです。likesは熱意を表します。大きな数字ほどより強い気持ちです。「like」「wish」などの単語は適切に言い換えてください。"
+    prompt = "500字以内で返して。話し言葉で返してください。以下のリストを参考にして私の好みを推測してください。その後、リストにあるもの以外で新たなwishを5個提案してください。新たな提案は、【】で囲ってください。wishは今後やってみたいことです。likesは熱意を表します。大きな数字ほどより強い気持ちです。「like」「wish」などの単語は適切に言い換えてください。"
     full_prompt = "#{prompt}\n\nWishリスト:\n#{@wish_descriptions}"
     chat_gpt_service.chat(full_prompt)
   end
