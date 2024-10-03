@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[ index action ]
+  before_action :authenticate_user!, only: %i[ index action]
   before_action :set_user, only: %i[ index action ]
+  # before_action :set_test_user, only: %i[ index action ]
   before_action :set_wishes, only: %i[ index action ]
 
   # GET /users/:id
@@ -20,7 +21,7 @@ class UsersController < ApplicationController
     full_prompt = "#{prompt}\n\nWishリスト:\n#{wish_descriptions}"
     @action_plan = chat_gpt_service.chat(full_prompt)
 
-    render json: full_prompt
+    render json: {action_plan:@action_plan}
   end
 
   private
@@ -43,5 +44,8 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  def set_test_user
+    @user = User.find(2)
+  end
 
 end
