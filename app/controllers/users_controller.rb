@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  # before_action :authenticate_user!, only: %i[ index action candidate ]
-  # before_action :set_user, only: %i[ index action candidate ]
-  before_action :set_test_user, only: %i[ index action candidate ]
+  before_action :authenticate_user!, only: %i[ index action candidate ]
+  before_action :set_user, only: %i[ index action candidate ]
+  # before_action :set_test_user, only: %i[ index action candidate ]
   before_action :set_wishes, only: %i[ index action candidate ]
   before_action :wishes_to_descriptions, only: %i[ action candidate ]
 
