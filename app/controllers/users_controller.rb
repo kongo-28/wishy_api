@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     }.join("\n")
 
     chat_gpt_service = ChatGptService.new
-    prompt= "wishは今後やってみたいことです。likesはやりたい気持ちを表していて、大きな数字ほどより強い気持ちです。これを参考にして次の日曜日のアクションプランを考えてください。"
+    prompt= "500字以内で返して。話し言葉で返してください。以下のリストを参考にして次の日曜日のアクションプランを考えてください。wishは今後やってみたいことです。likesは熱意を表します。大きな数字ほどより強い気持ちです。「like」「wish」などの単語は適切に言い換えてください。"
     full_prompt = "#{prompt}\n\nWishリスト:\n#{wish_descriptions}"
     @action_plan = chat_gpt_service.chat(full_prompt)
 
