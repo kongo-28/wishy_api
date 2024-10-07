@@ -4,8 +4,8 @@ class WishesController < ApplicationController
 
   # GET /wishes
   def index
-    # @user = current_user
-    @user = User.find(2)
+    @user = current_user
+    # @user = User.find(2)
     @wishes = Wish.includes(:likes).order("updated_at DESC")
     if @user.present?
       wishes_with_user_likes = @wishes.map do |wish|
