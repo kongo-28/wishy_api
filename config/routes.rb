@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show] do
     collection do
       get 'action'
+      post 'action_plan'
       get 'candidate'
     end
   end
