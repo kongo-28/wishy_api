@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     @chat = Chat.new( request_params)
 
     if @chat.save
-      render json: @chat, status: :created, location: @chat
+      render json: @user, status: :created, location: @user
     else
       render json: @chat.errors, status: :unprocessable_entity
     end
