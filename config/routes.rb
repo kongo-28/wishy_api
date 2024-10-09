@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'auth'
   resources :wishes
   resources :likes, only: [:create]
+  resources :chats, only: [:index]
   resources :users, only: [:index, :show] do
     collection do
       get 'action'
