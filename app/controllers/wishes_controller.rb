@@ -4,8 +4,10 @@ class WishesController < ApplicationController
 
   # GET /wishes
   def index
+    likes_sum = 0
     @user = current_user
     # @user = User.find(2)
+
     @wishes = Wish.includes(:likes).order("updated_at DESC")
     if @user.present?
       wishes_with_user_likes = @wishes.map do |wish|
@@ -23,12 +25,16 @@ class WishesController < ApplicationController
       .where('likes.count >= ?', 1)
       .order(updated_at: :desc)
       .map do |wish|
+        likes_sum += wish.likes[0].count
         wish.as_json.merge(
           likes_user_count: wish.likes.count,
           likes: wish.likes.select { |like| like.user_id == @user.id }
         )
       end
+      @user = @user.as_json.merge(wish_count: @user.likes.count, likes_sum: likes_sum)
     end
+      
+
 
     render json: {user: @user,wishes: @wishes, wishes_user: @wishes_user}
   end
