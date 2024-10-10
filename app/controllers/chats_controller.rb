@@ -15,12 +15,7 @@ class ChatsController < ApplicationController
   # POST /chats
   def create
     @request = action_plan_params
-    request_params = action_plan_params.merge(
-                      title:"アクションプラン",
-                      content:generate_action_plan_with_request,
-                      user_id:current_user.id
-                      )
-    @chat = Chat.new( request_params)
+    @chat = Chat.new( action_request_params)
 
     if @chat.save
       render json: @chat, status: :created, location: @user
@@ -32,12 +27,7 @@ class ChatsController < ApplicationController
   # POST /chats/candidate
   def candidate
     @request = action_plan_params
-    request_params = action_plan_params.merge(
-                      title:"WISH候補",
-                      content:generate_candidate_with_request,
-                      user_id:current_user.id
-                      )
-    @chat = Chat.new( request_params)
+    @chat = Chat.new( candidate_request_params)
 
     if @chat.save
       render json: @chat, status: :created, location: @user
@@ -90,6 +80,22 @@ class ChatsController < ApplicationController
       @wish_descriptions = @wishes.map { 
         |wish| "Wish: #{wish["title"]}, likes: #{wish[:likes][0].count}" 
       }.join("\n")
+    end
+
+    def action_request_params
+      action_plan_params.merge(
+      title:"アクションプラン",
+      content:generate_action_plan_with_request,
+      user_id:current_user.id
+      )
+    end
+
+    def candidate_request_params
+      action_plan_params.merge(
+      title:"WISH候補",
+      content:generate_candidate_with_request,
+      user_id:current_user.id
+      )
     end
   
 end
