@@ -1,9 +1,12 @@
 class ChatsController < ApplicationController
+  before_action :authenticate_user!, only: %i[ index create candidate ]
+  before_action :set_user, only: %i[ index create candidate ]
+  # before_action :set_test_user, only: %i[ index create candidate ]
+  before_action :set_wishes, only: %i[ create candidate ]
+  before_action :wishes_to_descriptions, only: %i[ create candidate ]
 
   # GET /chats
   def index
-    @user = current_user
-    # @user = User.find(2)
     @chats = Chat.where(user_id:@user.id)
 
     render json: {user: @user,chats:@chats}
@@ -44,6 +47,13 @@ class ChatsController < ApplicationController
   end
 
   private
+    def set_user
+      @user = current_user
+    end
+
+    def set_test_user
+      @user = User.find(2)
+    end
 
     # Only allow a list of trusted parameters through.
     def action_plan_params
@@ -63,4 +73,23 @@ class ChatsController < ApplicationController
       full_prompt = "#{prompt}\n\n追加の要望:\n#{@request}\n\nWishリスト:\n#{@wish_descriptions}"
       chat_gpt_service.chat(full_prompt)
     end
+
+    def set_wishes
+      @wishes = Wish.joins(:likes)
+                    .where(likes: { user_id: @user.id })
+                    .where('likes.count >= ?', 1)
+                    .order(updated_at: :desc)
+                    .map do |wish|
+                      wish.as_json.merge(
+                        likes: wish.likes.select { |like| like.user_id == @user.id }
+                      )
+                    end
+    end
+  
+    def wishes_to_descriptions
+      @wish_descriptions = @wishes.map { 
+        |wish| "Wish: #{wish["title"]}, likes: #{wish[:likes][0].count}" 
+      }.join("\n")
+    end
+  
 end
