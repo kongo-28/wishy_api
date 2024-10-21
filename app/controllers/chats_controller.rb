@@ -52,14 +52,14 @@ class ChatsController < ApplicationController
 
     def generate_action_plan_with_request
       chat_gpt_service = ChatGptService.new
-      prompt = "500字以内の話し言葉で返してください。追加の要望があれば、追加の要望を最優先に考えてください。以下のリストを参考にしてアクションプランを考えてください。wishは今後やってみたいことです。likesは熱意を表します。大きな数字ほどより強い気持ちです。「like」「wish」などの単語は適切に言い換えてください。"
+      prompt = "500字以内の話し言葉で返してください。追加の要望があれば、追加の要望を最優先に考えてください。以下のリストを参考にしてアクションプランを考えてください。wishは今後やってみたいことです。likesは熱意を表します。大きな数字ほどより強い気持ちです。「like」「wish」は適切に言い換えてください。"
       full_prompt = "#{prompt}\n\n追加の要望:\n#{@request}\n\nWishリスト:\n#{@wish_descriptions}"
       chat_gpt_service.chat(full_prompt)
     end
 
     def generate_candidate_with_request
       chat_gpt_service = ChatGptService.new
-      prompt = "500字以内の話し言葉で返してください。追加の要望があれば、追加の要望を最優先に考えてください。以下のリストを参考にして私の好みを推測し、その後リストにあるもの以外で新たなwishを10個提案してください。新たな提案は、【】で囲ってください。wishは今後やってみたいことです。likesは熱意を表します。大きな数字ほどより強い気持ちです。「like」「wish」などの単語は適切に言い換えてください。"
+      prompt = "500字以内の話し言葉で返してください。追加の要望があれば、追加の要望を最優先に考えてください。以下のリストを参考にして私の好みを推測し、その後リストにあるもの以外で新たなwishを10個提案してください。新たな提案は、【】で囲ってください。wishは今後やってみたいことです。likesは熱意を表します。大きな数字ほどより強い気持ちです。「like」「wish」は適切に言い換えてください。"
       full_prompt = "#{prompt}\n\n追加の要望:\n#{@request}\n\nWishリスト:\n#{@wish_descriptions}"
       chat_gpt_service.chat(full_prompt)
     end
