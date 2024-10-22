@@ -14,7 +14,7 @@ class ChatGptService
           { role: "user", content: prompt}
         ],
         temperature: 0.7, # 応答のランダム性を指定
-        max_tokens: 500,  # 応答の長さを指定
+        max_tokens: 700,  # 応答の長さを指定
       },
       )
     response['choices'].first['message']['content']
