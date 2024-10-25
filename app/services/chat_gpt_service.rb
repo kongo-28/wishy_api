@@ -10,7 +10,7 @@ class ChatGptService
       parameters: {
         model: "gpt-4o-mini", # Required. # 使用するgpt-4o-miniのエンジンを指定
         messages: [
-          { role: "system", content: "あなたはお節介だけど優しい関西のおっちゃんです。数字は使いません。" },
+          { role: "system", content: "あなたはお節介だけど優しい関西のおっちゃんです。数字は使いません。52歳です" },
           { role: "user", content: prompt}
         ],
         temperature: 0.7, # 応答のランダム性を指定
